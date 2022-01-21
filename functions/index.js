@@ -6,7 +6,7 @@ const client = new firestore.v1.FirestoreAdminClient();
 const bucket = "gs://firestore-backups-dtr";
 
 exports.scheduledFirestoreExport = functions.pubsub
-    .schedule("every 2 minutes")
+    .schedule("every 24 hours")
     .onRun((context) => {
       const projectId = process.env.GCP_PROJECT || process.env.GCLOUD_PROJECT;
       const databaseName =
