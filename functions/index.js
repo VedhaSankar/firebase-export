@@ -4,6 +4,12 @@ const client = new firestore.v1.FirestoreAdminClient();
 
 // Replace BUCKET_NAME
 const bucket = "gs://firestore-backups-dtr";
+const today = new Date();
+const day = today.getDate();
+const month = today.getMonth()+1; 
+const year = today.getFullYear();
+
+const currentDate = year + "-" + month + "-" + day;
 
 exports.scheduledFirestoreExport = functions.pubsub
     .schedule("every 24 hours")
@@ -13,7 +19,7 @@ exports.scheduledFirestoreExport = functions.pubsub
         client.databasePath(projectId, "(default)");
       return client.exportDocuments({
         name: databaseName,
-        outputUriPrefix: bucket,
+        outputUriPrefix: `${bucket}/dtr-backup-${currentDate}`,
         // Leave collectionIds empty to export all collections
         // or set to a list of collection IDs to export,
         // collectionIds: ["users", "posts"]
